@@ -107,14 +107,15 @@ router.post('/createNew', [
 
 // Update User Documents
 
-router.put('/update/:email',(req,res)=>{
+router.put('/update/:id',(req,res)=>{
     // Update User Document
 
-    // Check Email is not or not
-   if(req.params.email){
-    User.updateOne(
-        { email:req.params.email },
-        {username:'Khalid'},
+    // Check id is not or not
+   if(req.params.id){
+    User.findByIdAndUpdate(    
+        req.params.id,
+        
+        {username:'Shahzaib'},
         (error,result)=>{
 
             // Check Error
