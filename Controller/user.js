@@ -182,5 +182,67 @@ router.delete('/delete/:email',(req,res)=>{
     }
 })
 
+
+// Login Router for User
+
+router.get('/login',[
+     // Check Not Empty Field
+    
+     check('password').not().isEmpty().trim().escape(),
+     check('email').isEmail().normalizeEmail()
+],(req,res)=>{
+    if (!errors.isEmpty()) {
+        return res.status(422).json({
+            status: false,
+            message: 'Form Validation Errors',
+            errors: errors.array()      //yeah error ko array may store karta jae ga and then show
+        })
+    }
+
+    // Check Email Exsit or Not
+    User.findOne(
+        {email:req.body.email},
+        (error,result)=>{
+            // Check email exist or not
+            if(error){
+                return res.json({
+                    status: false,
+                    message:"Emali No exist",
+                    error:error,
+                })
+            }
+
+            // if Result is empty or not
+            if(result){
+                // When result variable containe docuemtn
+                // match password
+                const isMatch=bcrypt.compareSync(req.body.password,result.password)
+
+                if(isMatch){
+                    return res.json({
+                        status:true,
+                        message:"User Login Success ......",
+                        result:result,
+                    })
+                }
+                return res.json({
+                    status:true,
+                    message:"Password Not Matched Login Failed ......",
+                    
+                })
+            }
+            else{
+                // User Document Not exist
+                return res.json({
+                    status:false,
+                    message:"User Not Exist",
+                    result:result,
+                })
+            }
+
+        }
+    )
+})
+
 // Module Exports
 module.exports = router
