@@ -144,5 +144,43 @@ router.put('/update/:id',(req,res)=>{
    }
 })
 
+
+// Delete User Document
+router.delete('/delete/:email',(req,res)=>{
+
+    // check email is empty or not
+    if(req.params.email){
+        User.remove(
+            {email:req.params.email},
+            (error,result)=>{
+                // Check if Error
+                if(error){
+                    return res.json({
+                        status: false,
+                        message:"Falid to Remove Data",
+                        error:error,
+                    })
+                }
+
+                // If Ok 
+                return res.json({
+                    status: true,
+                    message:'Data SuccessFully Remove',
+                    result:result
+                })
+            }
+        )
+    }
+
+    else{
+        return res.json({
+            // If Emaail is not provided
+            status:false,
+            message:"Email is Not provided",
+           
+        })
+    }
+})
+
 // Module Exports
 module.exports = router
