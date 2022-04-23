@@ -71,9 +71,35 @@ router.post('/createNew', [
             result:result,
         })
     })
-})
 
 
+   
+    
+});
+
+ // Find Data And REad
+
+ router.get('/find',(req,res)=>{
+    //  Find User Document
+    User.find((error,result)=>{
+        // Check if Error
+        if(error){
+            return res.json({
+                status: false,
+                message:"Falid to access Data",
+                error:error,
+            })
+
+        }
+        // If Every thing Ok 
+        return res.json({
+            status: true,
+            message:"Data Find",
+            result:result,
+        })
+    })
+    
+ })
 
 // Module Exports
 module.exports = router
