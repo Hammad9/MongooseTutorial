@@ -6,7 +6,8 @@ const bcrypt = require('bcryptjs');
 
 const { check, validationResult } = require('express-validator')
 
-const User = require('../Models/user')   //export module ke waja say yeah yaha export howa
+const User = require('../Models/user');   //export module ke waja say yeah yaha export howa
+const { json } = require('express/lib/response');
 
 
 //  MiddleWare Setup
@@ -102,6 +103,36 @@ router.post('/createNew', [
     })
     
  })
+
+
+// Update User Documents
+
+router.put('/update/:email',(req,res)=>{
+    // Update User Document
+
+    User.updateOne(
+        { email:req.params.email },
+        {username:'Shafeeqq'},
+        (error,result)=>{
+
+            // Check Error
+            if(error){
+                return res.json({
+                    status:false,
+                    message:"User Not Update",
+                    error:error,
+                })
+            }
+
+            // Check If Ok 
+            return res.json({
+                status: true,
+                message:'User Update',
+                result:result,
+            })
+        }
+    )
+})
 
 // Module Exports
 module.exports = router
