@@ -79,9 +79,11 @@ router.post('/createNew', [
 
  // Find Data And REad
 
- router.get('/find',(req,res)=>{
+ router.get('/find/:email',(req,res)=>{
     //  Find User Document
-    User.find((error,result)=>{
+        // req.query.email  is say ham url may email say data access karay gay
+        // {password:0} this will hide the specific field using projection
+    User.find({email:req.params.email},{password:0},(error,result)=>{
         // Check if Error
         if(error){
             return res.json({
