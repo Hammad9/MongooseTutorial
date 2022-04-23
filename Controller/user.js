@@ -110,9 +110,11 @@ router.post('/createNew', [
 router.put('/update/:email',(req,res)=>{
     // Update User Document
 
+    // Check Email is not or not
+   if(req.params.email){
     User.updateOne(
         { email:req.params.email },
-        {username:'Shafeeqq'},
+        {username:'Khalid'},
         (error,result)=>{
 
             // Check Error
@@ -132,6 +134,13 @@ router.put('/update/:email',(req,res)=>{
             })
         }
     )
+   }
+   else{
+       return res.json({
+           status: false,
+           message:"Email is Not Provided"
+       })
+   }
 })
 
 // Module Exports
