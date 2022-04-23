@@ -45,32 +45,45 @@ router.post('/createNew', [
     const hashedPassword = bcrypt.hashSync(req.body.password, 10)  //get password and convert 10 hash salt
 
 
-    // Create UserObject to save data using save method
-    // Here we create or save data using the object
-    const temp=new User({
-        username:req.body.username,
-        email:req.body.email,
-        password:hashedPassword,
-    })
+    // Create Function for insert data into mongodb using create method
 
-    // Inser Data into data base 
-    temp.save((error,result)=>{
-        // Check if Error
-        if(error){
-            return res.json({
-                status: false,
-                message:"Data not Save into Db",
-                error:error,
+     User.create(
+        {
+            username: req.body.username,
+            email: req.body.email,
+            password: hashedPassword,
+
+        },
+        (error,result)=>{
+            // Check Error
+            if(error){
+                return res.status(500).json({
+                    status:false,
+                    message:"DB Insert Data Fail....",
+                    error:error,
+                })
+            }
+
+            // if Every thing OK
+            res.json({
+                status:true,
+                message:'Every Thing Ok and Data insert',
+                result:result
             })
         }
- 
-        // Everything OK
-        return res.json({
-            status: true,
-            message:"Data Successfully Saved",
-            result:result,
-        })
+    )
+
+   
+
+    // Output data to User
+    {/** 
+    return res.json({
+        status:'true',
+        message:"User Data OK",
+        data:req.body,
+        hashpassword:hashedPassword,  //show the hash passwor in postman
     })
+    */}
 })
 
 
